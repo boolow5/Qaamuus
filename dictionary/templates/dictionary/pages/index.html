@@ -1,0 +1,90 @@
+{% extends 'dictionary/layout.html' %}
+{% block content %}
+<!-- main-column -->
+<div class="medium-8 column">
+  <div class="row column">
+    <p class="lead">Ereyada ugu xiisaha badan:</p>
+  </div>
+
+  <div class="row small-up-1">
+
+    {% for word in words %}
+    <div class="column">
+      <div class="shadowed card word-list-item">
+        <div class="card-divider word-header">
+          <a href="/word/{{word.url_text}}">
+            <h4>{{word.text}}</h4>
+          </a>
+        </div>
+        <div class="card-section">
+          <p>{{word.definition}}</p>
+        </div>
+        <div class="card-section">
+          <div class="row">
+            <div class="small-5 column">
+              <i class="fa fa-pencil-square-o fa-lg"></i>
+              <a href="#"><strong>{{word.author|capfirst}}</strong></a>
+            </div>
+            <div class="small-2 column">
+              <div class="float-right">
+                <i class="fa fa-comment-o fa-lg"></i> <span class="secondary badge">{{word.comments}}</span>
+              </div>
+            </div>
+            <div class="small-5 column reaction">
+              <div class="button-group tiny">
+                <a class="button hollow" {% if not request.user.is_authenticated %} data-open="loginModal"{% endif%}><i class="fa fa-thumbs-o-up fa-2x"></i> Sax <span class="primary badge">{{word.likes}}</span></a>
+                <a class="alert button hollow" {% if not request.user.is_authenticated %} data-open="loginModal"{% endif%}><i class="fa fa-thumbs-o-down fa-2x"></i> Qalad <span class="alert badge">{{word.dislikes}}</span></a>
+                <a class="success button hollow"><i class="fa fa-share-alt fa-2x"></i> Share <span class="success badge">{{word.shares}}</span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% if comments %}
+        <div class="card-divider">
+          <h5>Comments:</h5>
+          <div class="row comment callout">
+            <div class="small-7 columns">
+              <i class="fa fa-pencil-square-o fa-lg"></i>
+              <a href="#">: <strong>{{word.author|capfirst}}</strong></a>
+            </div>
+            <div class="small-5 columns">
+              <i class="fa fa-clock-o fa-lg"></i>
+              {{word.date_created}}
+            </div>
+            <div class="small-12 columns">
+              {{word.definition}}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+
+  </div>
+
+
+<div class="row">
+  <div class="small-5 pagination columns">
+    {% if words.has_previous %}
+    <a  class="arrow large hollow primary button" href="?page={{ words.previous_page_number }}">&laquo; Prev.</a>
+    {% endif %}
+  </div>
+  <div class="small-2 pagination columns">
+    <span>
+      <a href="">Page {{ words.number }} of {{ words.paginator.num_pages }}</a>
+    </span>
+  </div>
+  <div class="small-5 pagination columns">
+    {% if words.has_next %}
+    <a class="arrow large hollow primary button" href="?page={{ words.next_page_number }}">Next &raquo;</a>
+    {% endif %}
+  </div>
+
+
+</div>
+
+</div>
+<!-- main-column -->
+
+{% endblock %}

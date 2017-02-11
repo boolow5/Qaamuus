@@ -1,0 +1,28 @@
+{% load staticfiles %}
+{% block scripts %}
+
+<div class="reveal" id="loginModal" data-reveal>
+  <h1 class="modal-title">Login</h1>
+
+  <form action="/login/?next={{request.get_full_path}}" method="post">
+    {% csrf_token %}
+  <div class="row">
+    <div class="medium-6 columns">
+      <label>Username
+        <input type="text" name="username" placeholder="Username">
+      </label>
+    </div>
+    <div class="medium-6 columns">
+      <label>Password
+        <input type="password" name="password" placeholder="Password">
+      </label>
+    </div>
+  </div>
+  <div class="row column">
+    <button class="hollow expanded button">Login</button>
+  </div>
+  <p class="text-center">If you're not registered <a data-open="registerModal">Register here</a></p>
+</form>
+</div>
+
+{% endblock %}

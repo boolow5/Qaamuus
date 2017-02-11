@@ -1,0 +1,7 @@
+db.sqlite3
+bin/
+include/
+lib/
+local/
+share/
+*.pyc

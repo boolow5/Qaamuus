@@ -1,0 +1,34 @@
+{% block featured %}
+<!-- featured -->
+<div class="row">
+
+  <div class="medium-6 large-5 columns">
+    <h1>Qaamuuska Ciyaalka Xaafadda!</h1>
+    <p class="subheader">Madaama Luqadi hore ay dhimatay aan Ilaalinno tan Maanta. Erey kasta oo cusub oo aad taqaano macnihiisa la wadaag ciyaalka xaafadda.</p>
+    <p><a data-open="loginModal">Click me for a modal</a></p>
+  </div>
+
+  <div class="medium-6 large-7 columns">
+    <div class="shadowed callout primary">
+      <form method="post" action="/new/word/"  {% if request.user.is_authenticated %}action="/new/word"{% else %}onsubmit="return false" data-open="loginModal"{% endif%} id="small-new-word-form">
+        {% csrf_token %}
+        <div class="row">
+          <div class="small-12 columns">
+            <label>Geli erey cusub:
+              <input type="text" name="word" placeholder="Erey Cusub">
+            </label>
+          </div>
+          <div class="small-12 columns">
+            <label>Macnahiisa:
+              <input type="text" name="definition" placeholder="Micnihiisa">
+            </label>
+            <button type="submit" {% if not request.user.is_authenticated %} data-open="loginModal"{% endif%} class="hollow expanded button"><i class="fa fa-save fa-lg"></i> Diiwaangeli</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
+<!-- featured -->
+{% endblock %}

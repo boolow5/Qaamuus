@@ -1,0 +1,86 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{% block title %}Q.C.X{% endblock %}</title>
+<link rel="stylesheet" href="{% static 'dictionary/css/foundation.css' %}">
+<link rel="stylesheet" href="{% static 'dictionary/font-awesome/css/font-awesome.css' %}">
+<link rel="stylesheet" href="{% static 'dictionary/css/style.css' %}">
+
+<meta property="og:title" content="{{page.title}}" />
+<meta property="og:url" content="{{page.url}}" />
+<meta property="og:description" content="{{page.description}}" />
+<meta property="og:image" content="{{page.image}}" />
+<meta property="og:type" content="{{page.type}}" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="{{page.title}}" />
+<meta name="twitter:url" content="{{page.url}}" />
+<meta name="twitter:description" content="{{page.description}}" />
+<meta name="twitter:image" content="{{page.image}}" />
+
+<html itemscope itemtype="http://schema.org/Article">
+<meta itemprop="name" content="{{page.title}}">
+<meta itemprop="description" content="{{page.description}}">
+<meta itemprop="image" content="{{page.image}}">
+
+</head>
+<body>
+
+{% include 'dictionary/partials/topbar.html' %}
+
+
+
+  <br>
+
+  <div class="row column">
+    {% if messages %}
+      {% for message in messages %}
+      <div class="callout{% if message.tags == 'error' %} alert{% else %} {{message.tags}}{% endif %}">
+        <p>{{ message }}</p>
+      </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+
+{% if page.is_home %}
+  {% include 'dictionary/partials/featured.html' %}
+  <div class="row column">
+    <hr>
+  </div>
+{% endif %}
+
+
+
+
+<!-- main-content -->
+  <div class="row main-content">
+
+    {% block content %}{% endblock %}
+    {% include 'dictionary/partials/sidebar.html' %}
+
+
+  </div>
+  <!-- main-content -->
+
+{% include 'dictionary/partials/footer.html' %}
+
+{% include 'dictionary/partials/scripts.html' %}
+
+{% include 'dictionary/partials/loginModal.html' %}
+{% include 'dictionary/partials/registerModal.html' %}
+
+
+<script src="{% static 'dictionary/js/jquery.js' %}"></script>
+<script src="{% static 'dictionary/js/foundation.js' %}"></script>
+<script>
+  $(document).foundation();
+</script>
+
+
+</body>
+</html>

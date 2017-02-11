@@ -1,0 +1,57 @@
+{% block topbar %}
+
+<div class="top-bar">
+  <div class="top-bar-title">
+    <span data-responsive-toggle="responsive-menu" data-hide-for="medium">
+      <button class="menu-icon dark" type="button" data-toggle></button>
+    </span>
+    <a href="/">
+      <i class="fa fa-home fa-lg"></i>
+      <strong>{{app.name}}</strong>
+    </a>
+  </div>
+  <div id="responsive-menu">
+    <div class="top-bar-left">
+      <ul class="dropdown menu" data-dropdown-menu>
+        <li>
+          <a href="#"><i class="fa fa-list  fa-lg"></i>Categories</a>
+          <ul class="menu vertical">
+            <li><a href="#">Caadi</a></li>
+            <li><a href="#">Shactaro</a></li>
+            <li><a href="#">Ceeb</a></li>
+          </ul>
+        </li>
+        <li><a href="#"><i class="fa fa-list-alt fa-lg"></i>Dhamaan Ereyada</a></li>
+        <li><a href="#"><i class="fa fa-plus-square fa-lg"></i>Ereyo Cusub</a></li>
+      </ul>
+    </div>
+    <div class="top-bar-right">
+      <ul class="menu">
+        {% if not request.user.is_authenticated %}
+        <li>
+          <a class="button" data-open="registerModal">
+            <i class="fa fa-user-circle fa-lg"></i>
+            Register
+          </a>
+        </li>
+        <li>
+          <a class="button" data-open="loginModal">
+            <i class="fa fa-user-circle fa-lg"></i>
+            Login
+          </a>
+        </li>
+        {% else %}
+        <li>
+          <a class="button" href="/logout">
+            <i class="fa fa-user-circle fa-lg"></i>
+            Logout
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
