@@ -32,9 +32,9 @@
             </div>
             <div class="small-5 column reaction">
               <div class="button-group tiny">
-                <a class="button hollow" {% if not request.user.is_authenticated %} data-open="loginModal"{% endif%}><i class="fa fa-thumbs-o-up fa-2x"></i> Sax <span class="primary badge">{{word.likes}}</span></a>
-                <a class="alert button hollow" {% if not request.user.is_authenticated %} data-open="loginModal"{% endif%}><i class="fa fa-thumbs-o-down fa-2x"></i> Qalad <span class="alert badge">{{word.dislikes}}</span></a>
-                <a class="success button hollow"><i class="fa fa-share-alt fa-2x"></i> Share <span class="success badge">{{word.shares}}</span></a>
+                <a id="like-word-{{word.pk}}" class="button hollow" {% if not request.user.is_authenticated %} data-open="loginModal"{% else %} onclick="is_correct('word', {{word.pk}})" {% endif%}><i class="fa fa-check fa-2x"></i> Sax <span id="like-word-badge-{{word.pk}}" class="primary badge">{{word.likes}}</span></a>
+                <a id="dislike-word-{{word.pk}}" class="alert button hollow" {% if not request.user.is_authenticated %} data-open="loginModal"{% else %} onclick="not_correct('word', {{word.pk}})" {% endif%}><i class="fa fa-times fa-2x"></i> Qalad <span id="dislike-word-badge-{{word.pk}}" class="alert badge">{{word.dislikes}}</span></a>
+                <a id="share-word-{{word.pk}}" class="success button hollow"><i class="fa fa-share-alt fa-2x"></i> Share <span class="success badge">{{word.shares}}</span></a>
               </div>
             </div>
           </div>
