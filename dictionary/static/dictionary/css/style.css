@@ -51,3 +51,7 @@ body {
 .inactive-link {
   cursor: default;
 }
+.comment-reaction .button {
+  height: 3em;
+  padding: .3em;
+}
