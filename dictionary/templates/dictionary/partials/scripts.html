@@ -1,6 +1,67 @@
 {% load staticfiles %}
 {% block scripts %}
+<script src="{% static 'dictionary/js/axios.min.js' %}"></script>
+<script>
 
+  axios.defaults.xsrfHeaderName = "X-CSRFToken";
+
+  function is_correct(type, id) {
+    is_negative = 0
+    item_type = type
+    item_id = id
+    url = '/react/'
+    console.log('type: '+type +'\n'+id+': '+id);
+    axios.post(url, {
+      'item_type': item_type,
+      'is_negative': is_negative,
+      'item_id': item_id
+    })
+    .then(function (response) {
+      //console.log(response);
+      // check for data:
+      if (!response.data) return
+      like_html_id = 'like-'+item_type+'-badge-'+item_id
+      setText(like_html_id, response.data.likes)
+      dislike_html_id = 'dislike-'+item_type+'-badge-'+item_id
+      console.log(like_html_id);
+      console.log(dislike_html_id);
+      setText(dislike_html_id, response.data.dislikes)
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+  function not_correct(type, id) {
+    is_negative = 1
+    item_type = type
+    item_id = id
+    url = '/react/'
+    console.log('type: '+type +'\n'+id+': '+id);
+    axios.post(url, {
+      'item_type': item_type,
+      'is_negative': is_negative,
+      'item_id': item_id
+    })
+    .then(function (response) {
+      //console.log(response);
+      if (!response.data) return
+
+      like_html_id = 'like-'+item_type+'-badge-'+item_id
+      setText(like_html_id, response.data.likes)
+      dislike_html_id = 'dislike-'+item_type+'-badge-'+item_id
+      setText(dislike_html_id, response.data.dislikes)
+
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
+  function setText(id, text) {
+
+    $('#'+id).html(text)
+  }
+</script>
 
 
 {% endblock %}
