@@ -9,5 +9,5 @@ urlpatterns = [
                url(r'^logout/$', views.logout, name="logout"),
                url(r'^new/word/$', views.add_word, name="add_word"),
                url(r'^new/comment/$', views.add_comment, name="add_comment"),
-
+               url(r'^react/$', views.add_reaction, name="add_reaction"),
 ]

@@ -6,6 +6,7 @@ from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 
 from Qaamuus.settings import MY_WEB
+import json
 
 # Create your views here.
 def login(request):
@@ -80,7 +81,105 @@ def add_comment(request):
         return redirect("/word/"+word.url_text)
     return redirect("/")
 
+@login_required(login_url='/users/login/')
+def add_reaction(request):
+    if request.is_ajax:
+        if request.method == 'POST':
+            json_data = json.loads(request.body)
+            is_negative = json_data['is_negative']
+            user = request.user
+            item_type = json_data['item_type']
+            item_id = int(json_data['item_id'])
+            if item_type is None:
+                return JsonResponse({"error": "no item type"})
+            elif item_type != 'word' and item_type != 'comment':
+                return JsonResponse({"error": "reaction about unknown item type"})
 
+            if item_type == 'word':
+                word = Word.objects.get(pk=int(item_id))
+                if word is not None:
+                    previous_reaction = Reaction.objects.filter(user=user, word=word)
+                    if len(previous_reaction):
+                        # remove like and replace with dislike
+                        if previous_reaction[0].negative != is_negative:
+                            previous_reaction[0].negative = is_negative
+                            previous_reaction[0].save()
+                            # disliked
+                            if is_negative:
+                                # word.likes = Reaction.objects.filter(word=word, negative=False).count()
+                                word.likes -= 1
+                                word.dislikes += 1
+                            if not is_negative:
+                                # liked
+                                word.dislikes -= 1
+                                word.likes += 1
+                                #word.dislikes = Reaction.objects.filter(word=word, negative=True).count()
+                            word.save()
+                            return JsonResponse({"success": "reaction saved successfully", "dislikes":word.dislikes, "likes": word.likes})
+                        else:
+                            reaction_type = ''
+                            if is_negative == True:
+                                reaction_type = 'dislike'
+                            else:
+                                reaction_type = 'like'
+                            return JsonResponse({"warning": "you already "+reaction_type+"d this"})
+
+                    else:
+                        reaction = Reaction(user=user, word=word)
+                        reaction.negative = is_negative
+                        reaction.save()
+                        word.likes = Reaction.objects.filter(word=word, negative=False).count()
+                        word.dislikes = Reaction.objects.filter(word=word, negative=True).count()
+                        word.save()
+                        return JsonResponse({"success": "reaction saved successfully", "dislikes":word.dislikes, "likes": word.likes})
+
+                else:
+                    return JsonResponse({"error": "reaction about unknown word"})
+
+            elif item_type == 'comment':
+                comment = Comment.objects.get(pk=int(item_id))
+                if comment is not None:
+                    previous_reaction = Reaction.objects.filter(user=user, comment=comment)
+                    if len(previous_reaction):
+                        # remove like and replace with dislike
+                        if previous_reaction[0].negative != is_negative:
+                            previous_reaction[0].negative = is_negative
+                            previous_reaction[0].save()
+                            # disliked
+                            if is_negative:
+                                # comment.likes = Reaction.objects.filter(comment=comment, negative=False).count()
+                                comment.likes -= 1
+                                comment.dislikes += 1
+                            if not is_negative:
+                                # liked
+                                comment.dislikes -= 1
+                                comment.likes += 1
+                                #comment.dislikes = Reaction.objects.filter(comment=comment, negative=True).count()
+                            comment.save()
+                            return JsonResponse({"success": "reaction saved successfully", "dislikes":comment.dislikes, "likes": comment.likes})
+                        else:
+                            reaction_type = ''
+                            if is_negative == True:
+                                reaction_type = 'dislike'
+                            else:
+                                reaction_type = 'like'
+                            return JsonResponse({"warning": "you already "+reaction_type+"d this"})
+
+                    else:
+                        reaction = Reaction(user=user, comment=comment)
+                        reaction.negative = is_negative
+                        reaction.save()
+                        if not is_negative:
+                            comment.likes += 1      # Reaction.objects.filter(comment=comment, negative=False).count()
+                        else:
+                            comment.dislikes += 1   # Reaction.objects.filter(comment=comment, negative=True).count()
+                        comment.save()
+                        return JsonResponse({"success": "reaction saved successfully", "dislikes":comment.dislikes, "likes": comment.likes})
+
+                else:
+                    return JsonResponse({"error": "reaction about unknown comment"})
+                    
+    return JsonResponse({"error": "unacceptable method"})
 
 def index(request):
     page_data = {
@@ -136,9 +235,9 @@ def detail(request, word_url):
         word = None
     page_data = {
         "url": MY_WEB["domain_name"] + request.get_full_path(),
-        "title": MY_WEB["name"] + ": Aqoon wadaaga ciyaalka xaafada",
+        "title": MY_WEB["name"] + "| " + word.text,
         "image": MY_WEB["default_image"],
-        "description": MY_WEB["description"]
+        "description": word.text + ": " + charLimit(word.definition, 30)
     }
     if word is not None:
         title = word.text
@@ -161,3 +260,8 @@ def getCategories():
 
 def getAllWords(offset=0, limit=10):
     words = Word.objects.filter()[offset:limit]
+
+def charLimit(string, limit=1):
+    if len(string) <= limit:
+        return string
+    return string[:limit] + '...'
