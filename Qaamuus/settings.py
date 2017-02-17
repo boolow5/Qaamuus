@@ -132,3 +132,6 @@ MY_WEB = {
     "default_image": "/static/dictionary/img/ciyaalka-xaafada.png",
     "domain_name": "localhost:8000",
 }
+
+# for axios
+CSRF_COOKIE_NAME = "XSRF-TOKEN"
