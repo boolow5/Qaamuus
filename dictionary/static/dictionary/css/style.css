@@ -55,3 +55,7 @@ body {
   height: 3em;
   padding: .3em;
 }
+.comment-reaction .badge, .reaction .badge {
+  box-shadow: 0 0 3px #000;
+  border: 2px solid #FFF;
+}
