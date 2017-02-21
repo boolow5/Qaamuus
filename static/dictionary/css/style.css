@@ -1,0 +1,61 @@
+.main-content {
+  min-height: 17.9em;
+}
+.login-form, #register-form {
+  max-width: 25em;
+  margin: auto;
+}
+
+.top-bar {
+  background-color: #0f0f0f;
+  color: #EFE;
+}
+.top-bar li {
+  background-color: #050505;
+}
+.top-bar a {
+  background-color: #080808;
+  color: #d6eee3;
+}
+body {
+  background-color: #d6eee3;
+}
+.word-header {
+  background-color: #a3d0e4;
+  color: #000;
+}
+.word-list-item card-divider {
+  padding: 0;
+}
+.comment {
+  background-color: #4AA;
+
+  border-radius: 1em;
+}
+.comments-wrapper {
+  background-color: #EEF;
+}
+.reaction span {
+  font-weight: bolder;
+}
+.modal-title {
+  background-color: #a3d0e4;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 0 3px #000;
+  box-shadow: inset 0 0 3px #000;
+}
+.shadowed {
+  box-shadow: 0 0 1px #666;
+}
+.inactive-link {
+  cursor: default;
+}
+.comment-reaction .button {
+  height: 3em;
+  padding: .3em;
+}
+.comment-reaction .badge, .reaction .badge {
+  box-shadow: 0 0 3px #000;
+  border: 2px solid #FFF;
+}
