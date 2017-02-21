@@ -27,7 +27,7 @@ def signup(request):
     if request.user.is_authenticated():
         messages.add_message(request, messages.SUCCESS, 'You are already logged in')
         return redirect(next)
-        
+
     page_data = {
         "url": MY_WEB["domain_name"] + request.get_full_path(),
         "title": "Iska diiwaangeli Qaamuuska Ciyaalka Xaafada",
@@ -281,7 +281,7 @@ def detail(request, word_url):
         word = None
     page_data = {
         "url": MY_WEB["domain_name"] + request.get_full_path(),
-        "title": MY_WEB["name"] + "| " + word.text,
+        "title": word.text +  "| " + MY_WEB["name"],
         "image": MY_WEB["default_image"],
         "description": word.text + ": " + charLimit(word.definition, 30)
     }
@@ -289,9 +289,9 @@ def detail(request, word_url):
         title = word.text
         page_data = {
             "url": MY_WEB["domain_name"] + request.get_full_path(),
-            "title": MY_WEB["name"] + ": " + word.text,
+            "title": word.text +  "| " + MY_WEB["name"],
             "image": MY_WEB["default_image"],
-            "description": MY_WEB["description"]
+            "description": word.text + ": " + charLimit(word.definition, 30)
         }
         comments = Comment.objects.filter(about__pk=word.pk)
 
