@@ -16,10 +16,9 @@
     <div class="small-6 large-3 columns">
       <p class="lead">Ereyada ugu xiisaha badan</p>
       <ul class="menu vertical">
-        <li><a href="#">Xabad Shidan</a></li>
-        <li><a href="#">Dawo dhacday</a></li>
-        <li><a href="#">Shaxaad ku nool</a></li>
-        <li><a href="#">Xaar weyn aa ku yaal</a></li>
+        {% for word in fav_words %}
+        <li><a href="#">{{word.text}}</a></li>
+        {% endfor %}
       </ul>
     </div>
 

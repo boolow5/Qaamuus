@@ -35,15 +35,20 @@
           </a>
         </li>
         <li>
-          <a class="button" data-open="loginModal">
+          <a class="success button" data-open="loginModal">
             <i class="fa fa-user-circle fa-lg"></i>
             Login
           </a>
         </li>
         {% else %}
         <li>
-          <a class="button" href="/logout">
+          <a class="menu-text" href="#">
             <i class="fa fa-user-circle fa-lg"></i>
+            {{request.user.username |capfirst}}
+          </a>
+        </li>
+        <li>
+          <a class="alert button" href="/logout">
             Logout
           </a>
         </li>

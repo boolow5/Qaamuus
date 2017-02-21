@@ -22,6 +22,33 @@ def login(request):
         messages.add_message(request, messages.ERROR, 'Incorrect username or password')
         return redirect(next)
 
+def register(request):
+    username = request.POST.get('username')
+    email = request.POST.get('email')
+    password = request.POST.get('password')
+
+    # check user exists:
+    user_count = User.objects.filter(username=username).count()
+    if user_count > 0:
+        messages.add_message(request, messages.ERROR, 'Username already exists')
+        return redirect(next)
+
+    # save user
+    user = User.objects.create_user(username=username, email=email, password=password)
+    user.save()
+
+    # authenticate user
+    user = auth.authenticate(username=username, password=password)
+    next = request.GET.get("next", "/")
+    if user is not None:
+        auth.login(request, user)
+        messages.add_message(request, messages.SUCCESS, 'Registered successfully')
+        return redirect(next)
+    else:
+        messages.add_message(request, messages.ERROR, 'Incorrect username or password')
+        return redirect(next)
+
+
 def logout(request):
     auth.logout(request)
     messages.add_message(request, messages.SUCCESS, 'Logged out successfully')
@@ -178,7 +205,7 @@ def add_reaction(request):
 
                 else:
                     return JsonResponse({"error": "reaction about unknown comment"})
-                    
+
     return JsonResponse({"error": "unacceptable method"})
 
 def index(request):
@@ -203,7 +230,8 @@ def index(request):
     if page is None:
         page = 1
 
-    return render(request, "dictionary/pages/index.html", {"title": "Home", "words": words, "page": page_data, "app": MY_WEB})
+    fav_words = Word.objects.order_by('-likes')[:4]
+    return render(request, "dictionary/pages/index.html", {"title": "Home", "words": words, "fav_words": fav_words, "page": page_data, "app": MY_WEB})
 
 def list(request):
     page_data = {
@@ -223,7 +251,8 @@ def list(request):
     except EmptyPage:
         words = paginator.page(paginator.num_pages)
 
-    return render(request, "dictionary/pages/list.html", {"title": "List", "ishome":"home", "words": words, "page": page_data, "app": MY_WEB})
+    fav_words = Word.objects.order_by('-likes')[:4]
+    return render(request, "dictionary/pages/list.html", {"title": "List", "ishome":"home", "words": words, "fav_words": fav_words, "page": page_data, "app": MY_WEB})
 
 def detail(request, word_url):
     words = Word.objects.filter(url_text__startswith=word_url)
@@ -249,7 +278,8 @@ def detail(request, word_url):
         }
         comments = Comment.objects.filter(about__pk=word.pk)
 
-    return render(request, "dictionary/pages/detail.html", {"title": title, "page": page_data, "word": word, "comments": comments, "app": MY_WEB})
+    fav_words = Word.objects.order_by('-likes')[:4]
+    return render(request, "dictionary/pages/detail.html", {"title": title, "page": page_data, "word": word, "fav_words": fav_words, "comments": comments, "app": MY_WEB})
 
 # helper functions
 def getCategories():
