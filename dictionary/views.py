@@ -22,32 +22,52 @@ def login(request):
         messages.add_message(request, messages.ERROR, 'Incorrect username or password')
         return redirect(next)
 
+def signup(request):
+    next = request.GET.get('next', '/')
+    if request.user.is_authenticated():
+        messages.add_message(request, messages.SUCCESS, 'You are already logged in')
+        return redirect(next)
+        
+    page_data = {
+        "url": MY_WEB["domain_name"] + request.get_full_path(),
+        "title": "Iska diiwaangeli Qaamuuska Ciyaalka Xaafada",
+        "image": MY_WEB["default_image"],
+        "description": MY_WEB["description"],
+        "is_home": False,
+    }
+
+    fav_words = Word.objects.order_by('-likes')
+    return render(request, "dictionary/pages/signup.html", {"title": "Sign up", "fav_words": fav_words, "page": page_data, "app": MY_WEB})
+
+
 def register(request):
-    username = request.POST.get('username')
-    email = request.POST.get('email')
-    password = request.POST.get('password')
-
-    # check user exists:
-    user_count = User.objects.filter(username=username).count()
-    if user_count > 0:
-        messages.add_message(request, messages.ERROR, 'Username already exists')
-        return redirect(next)
-
-    # save user
-    user = User.objects.create_user(username=username, email=email, password=password)
-    user.save()
-
-    # authenticate user
-    user = auth.authenticate(username=username, password=password)
     next = request.GET.get("next", "/")
-    if user is not None:
-        auth.login(request, user)
-        messages.add_message(request, messages.SUCCESS, 'Registered successfully')
-        return redirect(next)
-    else:
-        messages.add_message(request, messages.ERROR, 'Incorrect username or password')
-        return redirect(next)
+    if request.method == "POST":
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
 
+        # check user exists:
+        user_count = User.objects.filter(username=username).count()
+        if user_count > 0:
+            messages.add_message(request, messages.ERROR, 'Username already exists')
+            return redirect(next)
+
+        # save user
+        user = User.objects.create_user(username=username, email=email, password=password)
+        user.save()
+
+        # authenticate user
+        user = auth.authenticate(username=username, password=password)
+
+        if user is not None:
+            auth.login(request, user)
+            messages.add_message(request, messages.SUCCESS, 'Registered successfully')
+            return redirect(next)
+        else:
+            messages.add_message(request, messages.ERROR, 'Incorrect username or password')
+            return redirect(next)
+    return redirect('/signup')
 
 def logout(request):
     auth.logout(request)
@@ -227,10 +247,7 @@ def index(request):
     except EmptyPage:
         words = paginator.page(paginator.num_pages)
 
-    if page is None:
-        page = 1
-
-    fav_words = Word.objects.order_by('-likes')[:4]
+    fav_words = Word.objects.order_by('-likes')
     return render(request, "dictionary/pages/index.html", {"title": "Home", "words": words, "fav_words": fav_words, "page": page_data, "app": MY_WEB})
 
 def list(request):
@@ -251,7 +268,7 @@ def list(request):
     except EmptyPage:
         words = paginator.page(paginator.num_pages)
 
-    fav_words = Word.objects.order_by('-likes')[:4]
+    fav_words = Word.objects.order_by('-likes')
     return render(request, "dictionary/pages/list.html", {"title": "List", "ishome":"home", "words": words, "fav_words": fav_words, "page": page_data, "app": MY_WEB})
 
 def detail(request, word_url):
@@ -278,7 +295,7 @@ def detail(request, word_url):
         }
         comments = Comment.objects.filter(about__pk=word.pk)
 
-    fav_words = Word.objects.order_by('-likes')[:4]
+    fav_words = Word.objects.order_by('-likes')
     return render(request, "dictionary/pages/detail.html", {"title": title, "page": page_data, "word": word, "fav_words": fav_words, "comments": comments, "app": MY_WEB})
 
 # helper functions
