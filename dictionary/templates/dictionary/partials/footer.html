@@ -16,7 +16,7 @@
     <div class="small-6 large-3 columns">
       <p class="lead">Ereyada ugu xiisaha badan</p>
       <ul class="menu vertical">
-        {% for word in fav_words %}
+        {% for word in fav_words|slice:":4" %}
         <li><a href="#">{{word.text}}</a></li>
         {% endfor %}
       </ul>
