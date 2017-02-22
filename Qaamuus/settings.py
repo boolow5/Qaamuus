@@ -126,11 +126,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # APPLICATION VARIABLES
 MY_WEB = {
     "name": "Qaamuuska Ciyaalka Xaafada",
-    "author": "Mahdi Ahmed",
-    "owner": "Bolow Software Solutions",
+    "author": "Mahdi Bolow",
+    "owner": "Mahdi A. Abdullahi",
     "description": "Madaama Luqadi hore ay dhimatay aan Ilaalinno tan Maanta. Erey kasta oo cusub oo aad taqaano macnihiisa la wadaag ciyaalka xaafadda.",
     "default_image": "/static/dictionary/img/ciyaalka-xaafada.png",
-    "domain_name": "localhost:8000",
+    "domain_name": "http://qaamuuska.com",
 }
 
 # for axios
