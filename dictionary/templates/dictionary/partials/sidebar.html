@@ -7,10 +7,12 @@
       </div>
       <div class="row column callout">
         <h5>Ereyada Loogu Xiisaha badan yahay</h5>
-        <ul>
+        <ul class="menu vertical">
           {% for word in fav_words|slice:":20" %}
           <li>
-            {{word.likes}} <i class="fa fa-times fa-lg"></i> {{word.text}}
+            <a href="/word/{{word.url_text}}">
+              {{word.likes}} | {{word.text}}
+            </a>
           </li>
           {% endfor %}
         </ul>
