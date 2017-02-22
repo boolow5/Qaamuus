@@ -10,7 +10,7 @@
         <ul>
           {% for word in fav_words|slice:":20" %}
           <li>
-            {{word.likes}} <i class="fa fa-times fa-2x"></i> {{word.text}}
+            {{word.likes}} <i class="fa fa-times fa-lg"></i> {{word.text}}
           </li>
           {% endfor %}
         </ul>
