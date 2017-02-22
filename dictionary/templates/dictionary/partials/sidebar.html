@@ -14,7 +14,7 @@
         <ul class="menu vertical">
           {% for word in fav_words|slice:":20" %}
           <li>
-            <a class="hollow expanded button" href="/word/{{word.url_text}}">
+            <a class="expanded button xs-margin" href="/word/{{word.url_text}}">
               <span class="float-left">{{word.likes}} |</span> {{word.text}}
             </a>
           </li>
