@@ -236,7 +236,7 @@ def index(request):
         "description": MY_WEB["description"],
         "is_home": True,
     }
-    word_list = Word.objects.all()
+    word_list = Word.objects.all().order_by('-id')
     paginator = Paginator(word_list, 10)
 
     page = request.GET.get('page')
