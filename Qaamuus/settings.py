@@ -28,6 +28,9 @@ DEBUG = False #True
 ALLOWED_HOSTS = ['qaamuuska.com', 'www.qaamuuska.com', 'localhost']
 
 
+ALLOWED_HOSTS = ['qaamuuska.com', 'www.qaamuuska.com', 'localhost']
+
+
 # Application definition
 
 INSTALLED_APPS = [
