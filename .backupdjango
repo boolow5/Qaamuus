@@ -1,0 +1,25 @@
+#!/bin/sh
+#
+# EXAMPLE SCRIPT
+#
+echo "BACKING UP YOUR DJANGO APPLICATION DATABASE..."
+YEAR="$(date +%Y)"
+MONTH="$(date +%m)"
+DAY="$(date +%d)"
+HOUR="$(date +%H)"
+MINUTE="$(date +%M)"
+SECOND="$(date +%S)"
+
+BACKUPROOT="/webapps/qaamuuska/BACKUPS"
+
+. ~/.getqamus
+echo "Got the application root as: $(pwd)"
+
+echo "Creating required directories"
+mkdir -p $BACKUPROOT/$YEAR/$MONTH/$DAY
+echo "Creating file in \"$YEAR/$MONTH/$DAY\" in backup root \"$BACKUPROOT\""
+
+python manage.py dumpdata > $BACKUPROOT/$YEAR/$MONTH/$DAY/$HOUR":"$MINUTE":"$SECOND.json 
+
+echo "Done! Created backup file:"
+echo $BACKUPROOT/$YEAR/$MONTH/$DAY/$HOUR":"$MINUTE":"$SECOND.json
